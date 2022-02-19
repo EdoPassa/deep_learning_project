@@ -37,7 +37,7 @@ class Network(object):
 
     def sdg(self, training_data, epochs, mini_batch_size,
             eta, test_data=None):
-        n = len(list)
+        n = len(training_data)
         for j in range(epochs):
             random.shuffle(training_data)
             mini_batches = [training_data[k:k+mini_batch_size]
