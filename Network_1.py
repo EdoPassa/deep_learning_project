@@ -18,7 +18,7 @@ def cost_derivative(output_activations, y):
 class Network(object):
 
     def __init__(self, sizes):
-        # The waights and biases are Numpy matrixes initialized at
+        # The weights and biases are Numpy matrixes initialized at
         # random(Gaussian distributions with mean 0 and standard deviation 1)
         # for example net.weights[1] is storing the weights connecting the second and third layers of neurons
         self.num_layers = len(sizes)
