@@ -62,15 +62,26 @@ class Network(object):
                 print("Epoch {} complete".format(j))
 
     def update_mini_batch(self, mini_batch, eta):
+        # nabla_b and nabla_w are layer-by-layer lists of numpy arrays, similar
+        # to self.biases and self.weights.
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
+        # For each training example x, y in mini_batch, accumulate the changes
+        # to the weights and biases in nabla_b and nabla_w
         for x, y in mini_batch:
+            # This is where we compute the gradient for each training example.
+            # backprop does the backpropagation algorithm (see Section 1.3)
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+            # delta_nabla_b and delta_nabla_w are layer-by-layer lists of numpy 
+            # arrays, similar to nabla_b and nabla_w, but the values are
+            # layer-by-layer gradients
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [w-(eta/len(mini_batch))*nw
+        # Update the weights and biases using gradient descent with the
+        # accumulated values in nabla_b and nabla_w (see Section 1.3)
+        self.weights = [w-(eta/len(mini_batch))*nw 
                         for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b-(eta/len(mini_batch))*nb
+        self.biases = [b-(eta/len(mini_batch))*nb 
                        for b, nb in zip(self.biases, nabla_b)]
 
 
@@ -110,7 +121,67 @@ class Network(object):
         return nabla_b, nabla_w
 
     def evaluate(self, test_data):
+        """Return the number of test inputs for which the neural
+        network outputs the correct result. Note that the neural
+        network's output is assumed to be the index of whichever
+        neuron in the final layer has the highest activation."""
         test_results = [(np.argmax(self.feed_forward(x)), y)
-                        for x, y in test_data]
-        return sum(int(x == y) for x, y in test_results)
+                        for (x, y) in test_data]
+        return sum(int(x == y) for (x, y) in test_results)
 
+    # def cost_derivative(self, output_activations, y):
+    #     """Return the vector of partial derivatives \partial C_x /
+    #     \partial a for the output activations.
+    #     """
+    #     return (output_activations-y)
+    
+    # def save(self, filename):
+    #     np.save(filename, self.weights)
+    #     np.save(filename, self.biases)
+
+    # def load(self, filename):
+
+    #     self.weights = np.load(filename)
+    #     self.biases = np.load(filename)
+
+    # def predict(self, x):
+
+    #     return np.argmax(self.feed_forward(x))
+    
+    # def predict_proba(self, x):
+
+    #     return self.feed_forward(x)
+    
+    # def score(self, X, y):
+
+    #     return sum(int(self.predict(x) == y) for x, y in zip(X, y)) / len(X)
+    
+    # def get_params(self, deep=True):
+
+    #     return {'sizes': self.sizes}
+    
+    # def set_params(self, **parameters):
+
+    #     for parameter, value in parameters.items():
+    #         setattr(self, parameter, value)
+    #     return self
+    
+    # def __repr__(self):
+            
+    #     return "Network(sizes={})".format(self.sizes)
+    
+    # def __str__(self):
+
+    #     return "Network(sizes={})".format(self.sizes)
+    
+    # def __getstate__(self):
+
+    #     return {'sizes': self.sizes, 'weights': self.weights, 'biases': self.biases}
+    
+    # def __setstate__(self, state):
+
+    #     self.sizes = state['sizes']
+    #     self.weights = state['weights']
+    #     self.biases = state['biases']
+
+    
