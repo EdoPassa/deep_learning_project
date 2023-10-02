@@ -11,7 +11,7 @@ def sigmoid_prime(z):
     return sigmoid(z)*(1-sigmoid(z))
 
 
-def cost_derivative(output_activations, y):
+def cost_derivative(output_activations, y):  
     return output_activations-y
 
 
