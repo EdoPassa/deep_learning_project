@@ -28,7 +28,8 @@ class Network(object):
                         for x, y in zip(sizes[:-1], sizes[1:])]
 
 
-    def feed_forward(self, a): # 'a' is assumed to be an (n, 1) Numpy ndarray
+    def feed_forward(self, a): 
+        # 'a' is assumed to be an (n, 1) Numpy ndarray
         # Returns the output of the network if 'a' is the input
         for b, w in zip(self.biases, self.weights):
             a = sigmoid(np.dot(w, a) + b)
